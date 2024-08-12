@@ -20,6 +20,8 @@ public class Employee {
     private long employeeId;
 
     private String employeeName;
+    
+    @Column(nullable = false, unique = true)
     private String email;
     private Date dateOfJoining;
 
