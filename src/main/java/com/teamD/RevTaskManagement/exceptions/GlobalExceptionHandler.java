@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ResponseEntity<BaseResponse<String>> handleUserNotFoundException(ProjectNotFoundException ex){
+        BaseResponse<String> response = new BaseResponse<>(ex.getMessage(),null,HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(TaskNotFoundException.class)
     public ResponseEntity<BaseResponse<String>> handleTaskNotFoundException(TaskNotFoundException ex) {
         BaseResponse<String> response = new BaseResponse<>(

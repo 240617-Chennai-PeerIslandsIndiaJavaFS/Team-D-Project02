@@ -4,6 +4,7 @@ package com.teamD.RevTaskManagement.projectTest;
 import com.teamD.RevTaskManagement.dao.ProjectDAO;
 import com.teamD.RevTaskManagement.model.Project;
 import com.teamD.RevTaskManagement.service.ProjectService;
+import com.teamD.RevTaskManagement.utilities.ModelUpdater;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,6 +24,9 @@ import static org.mockito.Mockito.*;
 public class ProjectServiceTest {
     @Mock
     private ProjectDAO projectDAO;
+
+    @Mock
+    private ModelUpdater modelUpdater;
 
     @InjectMocks
     private ProjectService projectService;
@@ -67,13 +71,16 @@ public class ProjectServiceTest {
     }
 
     @Test
-    void testUpdateProject() {
-        when(projectDAO.findById(1L)).thenReturn(Optional.of(project1));
+    public void testUpdateProject() {
+        when(projectDAO.findById(1L)).thenReturn(Optional.ofNullable(project1));
         when(projectDAO.save(project1)).thenReturn(project1);
 
-        Project updatedProject = projectService.updateProject(1L, project1);
-        assertNotNull(updatedProject);
-        assertEquals("Project One", updatedProject.getProjectName());
+        Project updatedProject = projectService.updateProject(1L, project2);
+
+        verify(modelUpdater, times(1)).updateFields(project1, project2);
+        verify(projectDAO, times(1)).save(project1);
+
+        assertEquals(project1, updatedProject);
     }
 
     @Test
