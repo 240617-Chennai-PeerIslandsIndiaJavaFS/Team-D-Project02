@@ -3,14 +3,20 @@ package com.teamD.RevTaskManagement.service;
 import com.teamD.RevTaskManagement.dao.TaskDAO;
 import com.teamD.RevTaskManagement.exceptions.TaskNotFoundException;
 import com.teamD.RevTaskManagement.model.Task;
+import com.teamD.RevTaskManagement.utilities.ModelUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TaskService {
 
     @Autowired
     private TaskDAO taskRepository;
+
+    @Autowired
+    private ModelUpdater modelUpdater;
 
     // Method to get a task by its ID
     public Task getTaskById(Long id) {
@@ -28,34 +34,8 @@ public class TaskService {
         Task existingTask = taskRepository.findById(id).orElseThrow(() ->
                 new TaskNotFoundException("Task with ID " + id + " not found"));
 
-        // Update fields only if the new value is not null, otherwise keep the old value
-        if (updatedTask.getTaskName() != null) {
-            existingTask.setTaskName(updatedTask.getTaskName());
-        }
-        if (updatedTask.getDescription() != null) {
-            existingTask.setDescription(updatedTask.getDescription());
-        }
-        if (updatedTask.getStartDate() != null) {
-            existingTask.setStartDate(updatedTask.getStartDate());
-        }
-        if (updatedTask.getEndDate() != null) {
-            existingTask.setEndDate(updatedTask.getEndDate());
-        }
-        if (updatedTask.getTimestamp() != null) {
-            existingTask.setTimestamp(updatedTask.getTimestamp());
-        }
-        if (updatedTask.getProject() != null) {
-            existingTask.setProject(updatedTask.getProject());
-        }
-        if (updatedTask.getAssignees() != null) {
-            existingTask.setAssignees(updatedTask.getAssignees());
-        }
-        if (updatedTask.getComments() != null) {
-            existingTask.setComments(updatedTask.getComments());
-        }
-        if (updatedTask.getTimestamps() != null) {
-            existingTask.setTimestamps(updatedTask.getTimestamps());
-        }
+        // Use ModelUpdater to update fields
+        modelUpdater.updateFields(existingTask, updatedTask);
 
         return taskRepository.save(existingTask);
     }
@@ -66,5 +46,10 @@ public class TaskService {
                 new TaskNotFoundException("Task with ID " + id + " not found"));
 
         taskRepository.delete(task);
+    }
+
+    // Method to fetch all tasks
+    public List<Task> fetchAllTasks() {
+        return taskRepository.findAll();
     }
 }

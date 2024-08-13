@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -140,5 +142,30 @@ class TaskServiceTest {
 
         // Verify that the repository method was called
         verify(taskRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void testFetchAllTasks() {
+        // Creating a list of tasks
+        Task task2 = new Task();
+        task2.setTaskId(2L);
+        task2.setTaskName("Another Task");
+
+        List<Task> tasks = Arrays.asList(task, task2);
+
+        // Mocking the taskRepository.findAll() to return the list of tasks
+        when(taskRepository.findAll()).thenReturn(tasks);
+
+        // Call the method to test
+        List<Task> fetchedTasks = taskService.fetchAllTasks();
+
+        // Verify the results
+        assertNotNull(fetchedTasks);
+        assertEquals(2, fetchedTasks.size());
+        assertTrue(fetchedTasks.contains(task));
+        assertTrue(fetchedTasks.contains(task2));
+
+        // Verify that the repository method was called
+        verify(taskRepository, times(1)).findAll();
     }
 }
