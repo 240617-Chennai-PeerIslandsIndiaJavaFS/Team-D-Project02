@@ -5,11 +5,14 @@ import com.teamD.RevTaskManagement.exceptions.InvalidCredentialsException;
 import com.teamD.RevTaskManagement.exceptions.InvalidEmailException;
 import com.teamD.RevTaskManagement.model.Employee;
 import com.teamD.RevTaskManagement.utilities.EmailService;
+import com.teamD.RevTaskManagement.utilities.ModelUpdater;
 import com.teamD.RevTaskManagement.utilities.PasswordEncrypter;
 import com.teamD.RevTaskManagement.utilities.RandomCredentialsGenerator;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EmployeeService {
@@ -22,6 +25,9 @@ public class EmployeeService {
 
     @Autowired
     RandomCredentialsGenerator generator;
+
+    @Autowired
+    ModelUpdater modelUpdater;
 
     @Autowired
     PasswordEncrypter passwordEncrypter;
@@ -63,9 +69,26 @@ public class EmployeeService {
         if(employee==null){
             throw new InvalidCredentialsException("User not found");
         }
-        return null;
-
+        return employeeDAO.save(modelUpdater.updateFields(dbEmployee,employee));
     }
 
+    public List<Employee> fetchAllEmployees(){
+        return employeeDAO.findAll();
+    }
+
+    public String GenerateOtp(String email) {
+        Employee employee=employeeDAO.findByEmail(email);
+        if(employee==null){
+            throw new InvalidCredentialsException("Email does not exist");
+        }
+        String OTP= generator.generateOTP();
+        try {
+            emailService.sendMail(employee.getEmail(), "Password Reset", emailService.passwordResetTemplate(employee.getEmployeeName(), OTP));
+        }
+        catch (MessagingException e){
+            throw new InvalidEmailException("Not a valid mail");
+        }
+        return OTP;
+    }
     
 }

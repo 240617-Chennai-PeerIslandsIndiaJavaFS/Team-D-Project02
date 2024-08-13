@@ -53,9 +53,8 @@ public class EmailService {
                 "</body></html>";
     }
 
-    public String passwordResetTemplate(String name) {
+    public String passwordResetTemplate(String name,String pin) {
         String companyLogoUrl = "https://ci3.googleusercontent.com/meips/ADKq_NZzzF8-J04pj06Q8pdPUclP2jrDHxdZBKibzhjNtGBENFRelzOlaBy3GTh7TQ3sYdvH9SfJrpstXYlZpQHwViBk81B8MBezznkmT90aZ639hgUzUTpgQxTgAkM62cnAIFC-U1YIpm2uu24U4tJXEyag0VdkyKpg44hy9ilf=s0-d-e1-ft#https://gallery.mailchimp.com/4614193ed19755dee2c402a7a/images/92f7d632-70a8-4300-ad34-15d869efbd12.png";
-        String pin = generator.generateOTP();
         return "<html>" +
                 "<head><style>" +
                 "body { font-family: Arial, sans-serif; margin: 0; padding: 0; }" +
