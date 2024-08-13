@@ -1,6 +1,7 @@
 package com.teamD.RevTaskManagement.service;
 
 import com.teamD.RevTaskManagement.dao.EmployeeDAO;
+import com.teamD.RevTaskManagement.enums.EmployeeStatus;
 import com.teamD.RevTaskManagement.exceptions.InvalidCredentialsException;
 import com.teamD.RevTaskManagement.exceptions.InvalidEmailException;
 import com.teamD.RevTaskManagement.model.Employee;
@@ -58,8 +59,11 @@ public class EmployeeService {
         }
         password=passwordEncrypter.hashPassword(password);
         if(password.equals(dbEmployee.getPassword())){
-            dbEmployee.setPassword(null);
-            return dbEmployee;
+            if(dbEmployee.getStatus()== EmployeeStatus.ACTIVE) {
+                dbEmployee.setPassword(null);
+                return dbEmployee;
+            }
+            throw new InvalidCredentialsException("Not allowed to login");
         }
         throw  new InvalidCredentialsException("Invalid password");
     }
