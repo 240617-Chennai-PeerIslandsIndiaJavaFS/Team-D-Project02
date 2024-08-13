@@ -4,6 +4,7 @@ package com.teamD.RevTaskManagement.service;
 import com.teamD.RevTaskManagement.dao.ProjectDAO;
 import com.teamD.RevTaskManagement.exceptions.ProjectNotFoundException;
 import com.teamD.RevTaskManagement.model.Project;
+import com.teamD.RevTaskManagement.utilities.ModelUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
