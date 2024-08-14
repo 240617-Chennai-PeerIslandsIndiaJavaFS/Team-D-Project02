@@ -1,5 +1,6 @@
 package com.teamD.RevTaskManagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class Skill {
     private String description;
 
     @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Employee> employees;
 }

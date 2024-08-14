@@ -1,5 +1,7 @@
 package com.teamD.RevTaskManagement.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teamD.RevTaskManagement.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,5 +41,6 @@ public class Project {
     private List<Employee> team;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Task> tasks;
 }
