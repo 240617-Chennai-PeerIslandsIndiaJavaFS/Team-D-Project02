@@ -37,13 +37,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<BaseResponse<String>> handleGeneralException(Exception ex) {
-        BaseResponse<String> response = new BaseResponse<>(
-                "An unexpected error occurred: " + ex.getMessage(),
-                null,
-                HttpStatus.INTERNAL_SERVER_ERROR.value()
-        );
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
+
+    @ExceptionHandler(ImageNotFoundException.class)
+    public ResponseEntity<BaseResponse<String>> handleImageNotFoundException(ImageNotFoundException ex){
+        BaseResponse<String> response=new BaseResponse<>("error",ex.getMessage(),HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
 }
