@@ -20,7 +20,7 @@ public class ProfileService {
         try {
             if (dbProfile == null) {
                 Profile profile = new Profile();
-                profile.setEmail(file.getOriginalFilename());
+                profile.setEmail(email);
                 profile.setImage(file.getBytes());
                 return profileDAO.save(profile);
             }
