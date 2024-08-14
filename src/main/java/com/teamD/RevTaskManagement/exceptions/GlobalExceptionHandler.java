@@ -10,7 +10,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProjectNotFoundException.class)
-    public ResponseEntity<BaseResponse<String>> handleUserNotFoundException(ProjectNotFoundException ex){
+    public ResponseEntity<BaseResponse<String>> handleProjectNotFoundException(ProjectNotFoundException ex){
+        BaseResponse<String> response = new BaseResponse<>(ex.getMessage(),null,HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ClientNotFoundException.class)
+    public ResponseEntity<BaseResponse<String>> handleClientNotFoundException(ClientNotFoundException ex){
         BaseResponse<String> response = new BaseResponse<>(ex.getMessage(),null,HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
