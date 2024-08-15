@@ -48,6 +48,11 @@ public class GlobalExceptionHandler {
             BaseResponse<String> response = new BaseResponse<>(ex.getMessage(), null, HttpStatus.NOT_FOUND.value());
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+  @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<BaseResponse<String>> handleImageNotFoundException(NotFoundException ex) {
+        BaseResponse<String> response = new BaseResponse<>("error", ex.getMessage(), HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
 
     }
