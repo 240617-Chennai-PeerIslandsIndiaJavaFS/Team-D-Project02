@@ -1,5 +1,6 @@
 package com.teamD.RevTaskManagement.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teamD.RevTaskManagement.enums.EmployeeStatus;
 import com.teamD.RevTaskManagement.enums.Role;
 import jakarta.persistence.*;
@@ -35,7 +36,7 @@ public class Employee {
     private EmployeeStatus status;
 
     private String password;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<Project> projects;
 
