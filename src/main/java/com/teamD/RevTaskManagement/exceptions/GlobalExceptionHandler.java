@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProjectNotFoundException.class)
-    public ResponseEntity<BaseResponse<String>> handleProjectNotFoundException(ProjectNotFoundException ex){
-        BaseResponse<String> response = new BaseResponse<>(ex.getMessage(),null,HttpStatus.NOT_FOUND.value());
-        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+    public ResponseEntity<BaseResponse<String>> handleProjectNotFoundException(ProjectNotFoundException ex) {
+        BaseResponse<String> response = new BaseResponse<>(ex.getMessage(), null, HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ClientNotFoundException.class)
-    public ResponseEntity<BaseResponse<String>> handleClientNotFoundException(ClientNotFoundException ex){
-        BaseResponse<String> response = new BaseResponse<>(ex.getMessage(),null,HttpStatus.NOT_FOUND.value());
-        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+    public ResponseEntity<BaseResponse<String>> handleClientNotFoundException(ClientNotFoundException ex) {
+        BaseResponse<String> response = new BaseResponse<>(ex.getMessage(), null, HttpStatus.NOT_FOUND.value());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(TaskNotFoundException.class)
@@ -38,16 +38,16 @@ public class GlobalExceptionHandler {
     }
 
 
-
     @ExceptionHandler(ImageNotFoundException.class)
-    public ResponseEntity<BaseResponse<String>> handleImageNotFoundException(ImageNotFoundException ex){
-        BaseResponse<String> response=new BaseResponse<>("error",ex.getMessage(),HttpStatus.NOT_FOUND.value());
-        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
-   @ExceptionHandler(MessageNotFoundException.class)
-    public ResponseEntity<BaseResponse<String>> handleMessageNotFoundException(MessageNotFoundException ex) {
-        BaseResponse<String> response = new BaseResponse<>(ex.getMessage(), null, HttpStatus.NOT_FOUND.value());
+    public ResponseEntity<BaseResponse<String>> handleImageNotFoundException(ImageNotFoundException ex) {
+        BaseResponse<String> response = new BaseResponse<>("error", ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+        @ExceptionHandler(MessageNotFoundException.class)
+        public ResponseEntity<BaseResponse<String>> handleMessageNotFoundException (MessageNotFoundException ex){
+            BaseResponse<String> response = new BaseResponse<>(ex.getMessage(), null, HttpStatus.NOT_FOUND.value());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
 
-    
-}
+
+    }
