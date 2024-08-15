@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponse<String>> handleImageNotFoundException(NotFoundException ex) {
         BaseResponse<String> response = new BaseResponse<>("error", ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
+}
 
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<BaseResponse<String>> handleCommentNotFoundException(CommentNotFoundException ex){
