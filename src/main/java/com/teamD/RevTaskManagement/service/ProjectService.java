@@ -1,9 +1,12 @@
 package com.teamD.RevTaskManagement.service;
 
 
+import com.teamD.RevTaskManagement.dao.EmployeeDAO;
 import com.teamD.RevTaskManagement.dao.ProjectDAO;
+import com.teamD.RevTaskManagement.exceptions.InvalidCredentialsException;
 import com.teamD.RevTaskManagement.exceptions.NotFoundException;
 import com.teamD.RevTaskManagement.exceptions.ProjectNotFoundException;
+import com.teamD.RevTaskManagement.model.Employee;
 import com.teamD.RevTaskManagement.model.Project;
 import com.teamD.RevTaskManagement.utilities.ModelUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +14,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
 
     @Autowired
     private ProjectDAO projectDAO;
+
+    @Autowired
+    private EmployeeDAO employeeDAO;
 
     @Autowired
     private ModelUpdater modelUpdater;
@@ -70,5 +77,31 @@ public class ProjectService {
             throw new NotFoundException("Project with name: "+name+" not found");
         }
         return dbProject;
+    }
+
+    public List<Project> fetchUserProjects(Long user_id){
+        return projectDAO.findAll().stream()
+                .filter(project -> project.getTeam().stream()
+                        .anyMatch(employee -> employee.getEmployeeId()==(user_id)))
+                .toList();
+    }
+
+    public Project addUserIntoProject(long project_id,long employee_id){
+        Employee employee=employeeDAO.findById(employee_id).get();
+        Project project=getProjectById(project_id);
+        List<Employee> teams=project.getTeam();
+        teams.add(employee);
+        project.setTeam(teams);
+        Project dbProject=projectDAO.save(project);
+        return dbProject;
+    }
+
+    public Project removeUserFromProject(long project_id,long employee_id){
+        Project project=getProjectById(project_id);
+        List<Employee> employees=project.getTeam();
+        project.setTeam(employees.stream()
+                .filter(employee -> employee.getEmployeeId() != employee_id)
+                .toList());// Perform further operations like forEach, collect, etc.
+        return project;
     }
 }

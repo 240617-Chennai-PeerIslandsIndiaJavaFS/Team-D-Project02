@@ -53,4 +53,26 @@ public class ProjectController {
         BaseResponse<Project> baseResponse = new BaseResponse<>("Project Fetched ",projectService.fetchProjectByName(name),HttpStatus.OK.value());
         return new ResponseEntity<>(baseResponse,HttpStatus.OK);
     }
+
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<BaseResponse<List<Project>>> fetchUserProjects(@PathVariable long id){
+        BaseResponse<List<Project>> baseResponse=new BaseResponse<>("Fetched projects",projectService.fetchUserProjects(id),HttpStatus.OK.value());
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<BaseResponse<Project>> addUserIntoProject(@RequestParam long project_id,@RequestParam long employee_id){
+        BaseResponse<Project> baseResponse=new BaseResponse<>("Added successfully",projectService.addUserIntoProject(project_id,employee_id),HttpStatus.OK.value());
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/team")
+    public ResponseEntity<BaseResponse<Project>> removeUserFromProject(@RequestParam long project_id,@RequestParam long employee_id){
+        BaseResponse<Project> baseResponse=new BaseResponse<>("Deleted user",projectService.removeUserFromProject(project_id,employee_id),HttpStatus.OK.value());
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+    }
+
+
+
+
 }
