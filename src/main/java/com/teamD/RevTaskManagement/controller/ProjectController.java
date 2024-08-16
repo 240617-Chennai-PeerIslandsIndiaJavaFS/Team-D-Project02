@@ -48,4 +48,9 @@ public class ProjectController {
         return new ResponseEntity<>(baseResponse,HttpStatus.OK);
     }
 
+    @GetMapping("/name")
+    public ResponseEntity<BaseResponse<Project>> fetchByName(@RequestParam String name){
+        BaseResponse<Project> baseResponse = new BaseResponse<>("Project Fetched ",projectService.fetchProjectByName(name),HttpStatus.OK.value());
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+    }
 }

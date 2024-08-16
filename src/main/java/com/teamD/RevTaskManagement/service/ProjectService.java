@@ -2,6 +2,7 @@ package com.teamD.RevTaskManagement.service;
 
 
 import com.teamD.RevTaskManagement.dao.ProjectDAO;
+import com.teamD.RevTaskManagement.exceptions.NotFoundException;
 import com.teamD.RevTaskManagement.exceptions.ProjectNotFoundException;
 import com.teamD.RevTaskManagement.model.Project;
 import com.teamD.RevTaskManagement.utilities.ModelUpdater;
@@ -61,5 +62,13 @@ public class ProjectService {
         else{
             throw new ProjectNotFoundException("Project not found with id " + id);
         }
+    }
+
+    public Project fetchProjectByName(String name){
+        Project dbProject=projectDAO.findByProjectName(name);
+        if(dbProject==null){
+            throw new NotFoundException("Project with name: "+name+" not found");
+        }
+        return dbProject;
     }
 }

@@ -4,6 +4,7 @@ import com.teamD.RevTaskManagement.dao.EmployeeDAO;
 import com.teamD.RevTaskManagement.enums.EmployeeStatus;
 import com.teamD.RevTaskManagement.exceptions.InvalidCredentialsException;
 import com.teamD.RevTaskManagement.exceptions.InvalidEmailException;
+import com.teamD.RevTaskManagement.exceptions.NotFoundException;
 import com.teamD.RevTaskManagement.model.Employee;
 import com.teamD.RevTaskManagement.utilities.EmailService;
 import com.teamD.RevTaskManagement.utilities.ModelUpdater;
@@ -93,6 +94,15 @@ public class EmployeeService {
             throw new InvalidEmailException("Not a valid mail");
         }
         return OTP;
+    }
+
+    public Employee fetchByName(String name){
+        Employee dbemployee=employeeDAO.findByEmployeeName(name);
+        if(dbemployee==null){
+            throw new NotFoundException("Employee with name: "+name+" not found");
+        }
+        return dbemployee;
+
     }
     
 }

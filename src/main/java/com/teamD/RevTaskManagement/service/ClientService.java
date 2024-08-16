@@ -2,6 +2,7 @@ package com.teamD.RevTaskManagement.service;
 
 import com.teamD.RevTaskManagement.dao.ClientDAO;
 import com.teamD.RevTaskManagement.exceptions.ClientNotFoundException;
+import com.teamD.RevTaskManagement.exceptions.NotFoundException;
 import com.teamD.RevTaskManagement.exceptions.ProjectNotFoundException;
 import com.teamD.RevTaskManagement.model.Client;
 import com.teamD.RevTaskManagement.utilities.ModelUpdater;
@@ -56,5 +57,13 @@ public class ClientService {
         } else {
             throw new ClientNotFoundException("Client not found with id " + id);
         }
+    }
+
+    public  Client getClientByName(String name){
+        Client dbClient=clientDAO.findByCompanyName(name);
+        if(dbClient==null){
+            throw new NotFoundException("Client with name: "+name+" not found");
+        }
+        return dbClient;
     }
 }

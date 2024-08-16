@@ -62,4 +62,10 @@ public class EmployeeController {
         baseResponse.setMessages("OTP generated");
         return new ResponseEntity<>(baseResponse,HttpStatus.CREATED);
     }
+
+    @GetMapping("/name")
+    public ResponseEntity<BaseResponse<Employee>> findByName(@RequestParam String name){
+        BaseResponse<Employee> baseResponse=new BaseResponse<>("Fetched employee",employeeService.fetchByName(name),HttpStatus.OK.value());
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+    }
 }

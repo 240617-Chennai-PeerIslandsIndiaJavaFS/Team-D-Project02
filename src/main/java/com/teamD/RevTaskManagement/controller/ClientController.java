@@ -47,4 +47,10 @@ public class ClientController {
         BaseResponse<Client> baseResponse = new BaseResponse<>("Client is deleted Successfully",clientService.deleteClientById(id),HttpStatus.OK.value());
         return new ResponseEntity<>(baseResponse,HttpStatus.OK);
     }
+
+    @GetMapping("/name")
+    public ResponseEntity<BaseResponse<Client>> findClientByName(@RequestParam String name) {
+        BaseResponse<Client> baseResponse = new BaseResponse<>("Client fetched successfully",clientService.getClientByName(name),HttpStatus.OK.value());
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+    }
 }
