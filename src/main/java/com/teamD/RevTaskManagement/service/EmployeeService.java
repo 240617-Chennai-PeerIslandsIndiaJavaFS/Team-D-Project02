@@ -104,5 +104,14 @@ public class EmployeeService {
         return dbemployee;
 
     }
-    
+    public Employee fetchByEmail(String email) {
+        Employee dbEmployee = employeeDAO.findByEmail(email);
+        if (dbEmployee == null) {
+            throw new NotFoundException("Employee with email: " + email + " not found");
+        }
+        return dbEmployee;
+    }
+
+
+
 }
