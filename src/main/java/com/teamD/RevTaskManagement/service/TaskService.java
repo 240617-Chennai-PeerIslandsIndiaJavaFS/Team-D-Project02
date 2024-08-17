@@ -52,4 +52,7 @@ public class TaskService {
     public List<Task> fetchAllTasks() {
         return taskRepository.findAll();
     }
+    public List<Task> getTasksByProjectId(Long projectId) {
+        return taskRepository.findByProject_ProjectId(projectId);
+    }
 }

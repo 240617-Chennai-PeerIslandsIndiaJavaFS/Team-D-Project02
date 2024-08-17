@@ -72,4 +72,11 @@ public class TimelineController {
         BaseResponse<List<Timeline>> response = new BaseResponse<>("Timelines retrieved successfully", timelines, HttpStatus.OK.value());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/task/{taskId}")
+    public ResponseEntity<BaseResponse<List<Timeline>>> getAllTimelinesByTaskId(@PathVariable Long taskId) {
+        List<Timeline> timelines = timeLineService.getAllTimelinesByTaskId(taskId);
+        BaseResponse<List<Timeline>> response = new BaseResponse<>("Timelines fetched successfully", timelines, HttpStatus.OK.value());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
