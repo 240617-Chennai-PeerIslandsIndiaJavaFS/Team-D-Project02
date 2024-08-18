@@ -26,7 +26,7 @@ public class EmailService {
     }
 
     public String registrationTemplate(String name, String email,String password) {
-        String  companyLogoUrl= "https://imgur.com/5sOcUjx";
+        String  companyLogoUrl= "https://drive.google.com/thumbnail?id=1rfDkXlwF4ajVDdb1ygyfehN9MMF1QbWu";
         return "<html>" +
                 "<head><style>" +
                 "body { font-family: Arial, sans-serif; margin: 0; padding: 0; }" +
@@ -54,7 +54,7 @@ public class EmailService {
     }
 
     public String passwordResetTemplate(String name,String pin) {
-        String  companyLogoUrl= "https://imgur.com/5sOcUjx";
+        String  companyLogoUrl= "https://drive.google.com/thumbnail?id=1rfDkXlwF4ajVDdb1ygyfehN9MMF1QbWu";
         return "<html>" +
                 "<head><style>" +
                 "body { font-family: Arial, sans-serif; margin: 0; padding: 0; }" +
