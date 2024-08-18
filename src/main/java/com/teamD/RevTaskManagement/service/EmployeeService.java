@@ -112,6 +112,15 @@ public class EmployeeService {
         return dbEmployee;
     }
 
+    public Employee updateEmployeePassword(String email,String password){
+        Employee dbEmployee=employeeDAO.findByEmail(email);
+        if(dbEmployee==null){
+            throw  new NotFoundException("No user with the mail");
+        }
+        dbEmployee.setPassword(passwordEncrypter.hashPassword(password));
+        return employeeDAO.save(dbEmployee);
+    }
+
 
 
 }
