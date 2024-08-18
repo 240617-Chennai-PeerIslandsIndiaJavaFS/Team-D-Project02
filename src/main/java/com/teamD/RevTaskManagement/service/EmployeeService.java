@@ -6,6 +6,7 @@ import com.teamD.RevTaskManagement.exceptions.InvalidCredentialsException;
 import com.teamD.RevTaskManagement.exceptions.InvalidEmailException;
 import com.teamD.RevTaskManagement.exceptions.NotFoundException;
 import com.teamD.RevTaskManagement.model.Employee;
+import com.teamD.RevTaskManagement.model.Skill;
 import com.teamD.RevTaskManagement.utilities.EmailService;
 import com.teamD.RevTaskManagement.utilities.ModelUpdater;
 import com.teamD.RevTaskManagement.utilities.PasswordEncrypter;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -24,6 +26,9 @@ public class EmployeeService {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    SkillService skillService;
 
     @Autowired
     RandomCredentialsGenerator generator;
@@ -37,7 +42,15 @@ public class EmployeeService {
     public Employee createEmployee(Employee employee){
         Employee dbEmployee=employeeDAO.findByEmail(employee.getEmail());
         if(dbEmployee==null){
+
+            List<Skill> managedSkills = employee.getSkills().stream()
+                    .map(skill -> skillService.getSkillByName(skill.getSkill()))
+                    .collect(Collectors.toList());
+
+            employee.setSkills(managedSkills);
+
             String password=generator.generateRandomPassword();
+
 
            try {
                emailService.sendMail(employee.getEmail(), "Rev Task Registration", emailService.registrationTemplate(employee.getEmployeeName(),employee.getEmail(),password));
@@ -74,6 +87,21 @@ public class EmployeeService {
         if(employee==null){
             throw new InvalidCredentialsException("User not found");
         }
+        List<Skill> existingSkills = skillService.getAllSkills();
+
+        // Map incoming skills to existing skills
+        List<Skill> updatedSkills = employee.getSkills().stream()
+                .map(skill -> {
+                    Skill existingSkill = existingSkills.stream()
+                            .filter(s -> s.getSkill().equals(skill.getSkill()))
+                            .findFirst()
+                            .orElse(null);
+                    return existingSkill != null ? existingSkill : skill;
+                })
+                .collect(Collectors.toList());
+
+        employee.setSkills(updatedSkills);
+
         return employeeDAO.save(modelUpdater.updateFields(dbEmployee,employee));
     }
 

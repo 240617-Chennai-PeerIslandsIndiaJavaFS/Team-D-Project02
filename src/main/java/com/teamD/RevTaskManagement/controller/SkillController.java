@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/skill")
 public class SkillController {
@@ -25,6 +27,11 @@ public class SkillController {
     public ResponseEntity<BaseResponse<Skill>> fetchBySkill(@RequestParam String skill){
         BaseResponse<Skill> baseResponse=new BaseResponse<>("fetched skill",skillService.getSkillByName(skill), HttpStatus.FOUND.value());
         return new ResponseEntity<>(baseResponse,HttpStatus.FOUND);
+    }
 
+    @GetMapping("/allSkills")
+    public ResponseEntity<BaseResponse<List<Skill>>> getAllSkills(){
+        BaseResponse<List<Skill>> baseResponse=new BaseResponse<>("All skills fetched",skillService.getAllSkills(), HttpStatus.OK.value());
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
     }
 }

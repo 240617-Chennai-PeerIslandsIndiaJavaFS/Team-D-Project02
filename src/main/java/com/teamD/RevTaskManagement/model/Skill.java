@@ -20,7 +20,7 @@ public class Skill {
     private String skill;
     private String description;
 
-    @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Employee> employees;
+//    @ManyToMany(mappedBy = "skills", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Employee> employees;
 }
