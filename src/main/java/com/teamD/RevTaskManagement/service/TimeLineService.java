@@ -1,6 +1,9 @@
 package com.teamD.RevTaskManagement.service;
 
+import com.teamD.RevTaskManagement.dao.TaskDAO;
 import com.teamD.RevTaskManagement.dao.TimelineDAO;
+import com.teamD.RevTaskManagement.exceptions.TaskNotFoundException;
+import com.teamD.RevTaskManagement.model.Task;
 import com.teamD.RevTaskManagement.model.Timeline;
 import com.teamD.RevTaskManagement.exceptions.TimelineNotFoundException;
 import com.teamD.RevTaskManagement.utilities.ModelUpdater;
@@ -17,6 +20,9 @@ public class TimeLineService {
 
     @Autowired
     private ModelUpdater modelUpdater;
+
+    @Autowired
+    private TaskDAO taskDAO;
 
     // Create a new timeline
     public Timeline createTimeline(Timeline timeline) {
@@ -50,5 +56,11 @@ public class TimeLineService {
     // Get all timelines
     public List<Timeline> fetchAllTimelines() {
         return timelineRepository.findAll();
+    }
+
+    public List<Timeline> getAllTimelinesByTaskId(Long taskId) {
+        Task task = taskDAO.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + taskId));
+        return timelineRepository.findByTask(task);
     }
 }

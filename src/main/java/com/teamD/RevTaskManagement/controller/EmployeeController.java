@@ -68,4 +68,17 @@ public class EmployeeController {
         BaseResponse<Employee> baseResponse=new BaseResponse<>("Fetched employee",employeeService.fetchByName(name),HttpStatus.OK.value());
         return new ResponseEntity<>(baseResponse,HttpStatus.OK);
     }
+    @GetMapping("/email")
+    public ResponseEntity<BaseResponse<Employee>> findByEmail(@RequestParam String email) {
+        BaseResponse<Employee> baseResponse = new BaseResponse<>("Fetched employee", employeeService.fetchByEmail(email), HttpStatus.OK.value());
+        return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/reset")
+    public ResponseEntity<BaseResponse<Employee>> resetPassword(@RequestParam String email,@RequestParam String password){
+        BaseResponse<Employee> baseResponse = new BaseResponse<>("updated employee", employeeService.updateEmployeePassword(email,password), HttpStatus.OK.value());
+        return new ResponseEntity<>(baseResponse,HttpStatus.OK);
+    }
+
+
 }

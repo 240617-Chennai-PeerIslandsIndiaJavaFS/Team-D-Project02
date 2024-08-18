@@ -37,15 +37,16 @@ public class CommentService {
     public Comment getCommentById(Long id) {
         return commentDAO.findById(id).orElseThrow(() -> new CommentNotFoundException("Comment not found with id: " + id));
     }
-
-    public List<Comment> getAllCommentsByTaskId(Long taskId) {
-        Task task = taskDAO.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + taskId));;
-        return commentDAO.findByTask(task);
-    }
-
     public void deleteCommentById(Long id) {
         Comment comment = commentDAO.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found with id: " + id));
         commentDAO.delete(comment);
+    }
+    public List<Comment> getAllCommentsByTask(Task task) {
+        return commentDAO.findByTask(task);
+    }
+    public List<Comment> getAllCommentsByTaskId(Long taskId) {
+        Task task = taskDAO.findById(taskId).orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + taskId));;
+        return commentDAO.findByTask(task);
     }
 }
