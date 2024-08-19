@@ -29,6 +29,12 @@ public class ProjectService {
     private ModelUpdater modelUpdater;
 
     public Project createProject(Project project){
+        List<Employee> managedEmployees = project.getTeam().stream()
+                .map(employee -> employeeDAO.findById(employee.getEmployeeId())
+                        .orElseThrow(() -> new IllegalArgumentException("Employee not found: " + employee.getEmployeeId())))
+                .collect(Collectors.toList());
+
+        project.setTeam(managedEmployees);
         return projectDAO.save(project);
     }
 
@@ -39,6 +45,25 @@ public class ProjectService {
             Project existingProject = existing_project.get();
 
             modelUpdater.updateFields(existingProject, projectDetails);
+
+            List<Employee> existingEmployees = existingProject.getTeam();
+            List<Employee> updatedEmployees = projectDetails.getTeam().stream()
+                    .map(employee -> employeeDAO.findById(employee.getEmployeeId()))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
+
+            Employee newManager = updatedEmployees.stream()
+                    .filter(employee -> employee.getEmployeeId()==(projectDetails.getTeam().get(0).getEmployeeId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (newManager != null) {
+                existingEmployees.removeIf(emp -> emp.getEmployeeId()==(newManager.getEmployeeId()));
+                existingEmployees.add(newManager);
+            }
+
+            existingProject.setTeam(existingEmployees);
 
             return projectDAO.save(existingProject);
         }

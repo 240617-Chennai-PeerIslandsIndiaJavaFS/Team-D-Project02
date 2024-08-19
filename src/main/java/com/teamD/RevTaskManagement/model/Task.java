@@ -1,6 +1,7 @@
 package com.teamD.RevTaskManagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.teamD.RevTaskManagement.enums.Milestone;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class Task {
     private Date startDate;
     private Date endDate;
     private Date timestamp;
+    private Milestone current_status;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
