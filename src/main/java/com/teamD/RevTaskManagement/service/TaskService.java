@@ -1,19 +1,25 @@
 package com.teamD.RevTaskManagement.service;
 
+import com.teamD.RevTaskManagement.dao.EmployeeDAO;
 import com.teamD.RevTaskManagement.dao.TaskDAO;
 import com.teamD.RevTaskManagement.exceptions.TaskNotFoundException;
+import com.teamD.RevTaskManagement.model.Employee;
 import com.teamD.RevTaskManagement.model.Task;
 import com.teamD.RevTaskManagement.utilities.ModelUpdater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
 
     @Autowired
     private TaskDAO taskRepository;
+
+    @Autowired
+    private EmployeeDAO employeeDAO;
 
     @Autowired
     private ModelUpdater modelUpdater;
@@ -26,6 +32,12 @@ public class TaskService {
 
     // Method to create a new task
     public Task createTask(Task newTask) {
+        List<Employee> employees = newTask.getAssignees().stream()
+                .map(employee -> employeeDAO.findById(employee.getEmployeeId())
+                        .orElseThrow(() -> new RuntimeException("Employee with ID " + employee.getEmployeeId() + " not found")))
+                .collect(Collectors.toList());
+
+        newTask.setAssignees(employees);
         return taskRepository.save(newTask);
     }
 

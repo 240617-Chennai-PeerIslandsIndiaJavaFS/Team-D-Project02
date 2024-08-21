@@ -121,12 +121,12 @@ public class ProjectService {
         return dbProject;
     }
 
-    public Project removeUserFromProject(long project_id,long employee_id){
-        Project project=getProjectById(project_id);
-        List<Employee> employees=project.getTeam();
-        project.setTeam(employees.stream()
-                .filter(employee -> employee.getEmployeeId() != employee_id)
-                .toList());// Perform further operations like forEach, collect, etc.
-        return project;
-    }
+    public Project removeUserFromProject(long project_id, long employee_id) {
+    Project project = getProjectById(project_id);
+    List<Employee> employees = project.getTeam();
+    project.setTeam(employees.stream()
+            .filter(employee -> employee.getEmployeeId() != employee_id)
+            .collect(Collectors.toList())); // Add collect(Collectors.toList()) here
+    return projectDAO.save(project);
+}
 }
