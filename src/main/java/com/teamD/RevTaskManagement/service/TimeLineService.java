@@ -1,8 +1,11 @@
 package com.teamD.RevTaskManagement.service;
 
+import com.teamD.RevTaskManagement.dao.EmployeeDAO;
 import com.teamD.RevTaskManagement.dao.TaskDAO;
 import com.teamD.RevTaskManagement.dao.TimelineDAO;
+import com.teamD.RevTaskManagement.exceptions.NotFoundException;
 import com.teamD.RevTaskManagement.exceptions.TaskNotFoundException;
+import com.teamD.RevTaskManagement.model.Employee;
 import com.teamD.RevTaskManagement.model.Task;
 import com.teamD.RevTaskManagement.model.Timeline;
 import com.teamD.RevTaskManagement.exceptions.TimelineNotFoundException;
@@ -24,9 +27,17 @@ public class TimeLineService {
     @Autowired
     private TaskDAO taskDAO;
 
+    @Autowired
+    private EmployeeDAO employeeDAO;
+
     // Create a new timeline
     public Timeline createTimeline(Timeline timeline) {
-        return timelineRepository.save(timeline);
+        Employee employee=employeeDAO.findById(timeline.getEmployee().getEmployeeId()).get();
+        if(employee!=null) {
+            timeline.setEmployee(employee);
+            return timelineRepository.save(timeline);
+        }
+        throw new NotFoundException("Employee not found");
     }
 
     // Update an existing timeline using ModelUpdater
