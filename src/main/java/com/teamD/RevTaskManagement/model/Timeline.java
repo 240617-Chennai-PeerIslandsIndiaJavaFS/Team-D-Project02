@@ -25,4 +25,7 @@ public class Timeline {
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Employee employee;
 }
