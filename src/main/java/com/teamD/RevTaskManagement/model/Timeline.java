@@ -22,10 +22,10 @@ public class Timeline {
 
     private Date timestamp;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "task_id")
     private Task task;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Employee employee;
+//    @OneToOne(cascade = CascadeType.ALL)
+    private String employeeName;
 }

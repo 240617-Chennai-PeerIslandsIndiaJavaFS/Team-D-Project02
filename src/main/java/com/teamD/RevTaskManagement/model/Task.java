@@ -30,7 +30,7 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "task_assignees",
             joinColumns = @JoinColumn(name = "task_id"),
