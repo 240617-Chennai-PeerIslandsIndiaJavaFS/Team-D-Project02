@@ -32,12 +32,7 @@ public class TimeLineService {
 
     // Create a new timeline
     public Timeline createTimeline(Timeline timeline) {
-        Employee employee=employeeDAO.findById(timeline.getEmployee().getEmployeeId()).get();
-        if(employee!=null) {
-            timeline.setEmployee(employee);
-            return timelineRepository.save(timeline);
-        }
-        throw new NotFoundException("Employee not found");
+        return timelineRepository.save(timeline);
     }
 
     // Update an existing timeline using ModelUpdater

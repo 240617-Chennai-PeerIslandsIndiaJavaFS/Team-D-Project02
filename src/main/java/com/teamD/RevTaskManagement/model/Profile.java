@@ -20,7 +20,7 @@ public class Profile {
     private String email;
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
+    @Column(columnDefinition = "VARBINARY(MAX)")
     private byte[] image;
 
 }
