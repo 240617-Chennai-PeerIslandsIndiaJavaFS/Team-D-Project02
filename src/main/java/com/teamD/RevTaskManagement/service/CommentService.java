@@ -3,6 +3,7 @@ package com.teamD.RevTaskManagement.service;
 import com.teamD.RevTaskManagement.dao.CommentDAO;
 import com.teamD.RevTaskManagement.dao.TaskDAO;
 import com.teamD.RevTaskManagement.exceptions.CommentNotFoundException;
+import com.teamD.RevTaskManagement.exceptions.NotFoundException;
 import com.teamD.RevTaskManagement.exceptions.TaskNotFoundException;
 import com.teamD.RevTaskManagement.model.Comment;
 import com.teamD.RevTaskManagement.model.Task;
@@ -24,6 +25,11 @@ public class CommentService {
     private ModelUpdater modelUpdater;
 
     public Comment createComment(Comment comment) {
+        Task task=taskDAO.findById(comment.getTask().getTaskId()).get();
+        if(task==null){
+            throw new NotFoundException("task not found");
+        }
+        comment.setTask(task);
         return commentDAO.save(comment);
     }
 

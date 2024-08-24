@@ -30,9 +30,15 @@ public class TimeLineService {
     @Autowired
     private EmployeeDAO employeeDAO;
 
+
     // Create a new timeline
     public Timeline createTimeline(Timeline timeline) {
-        return timelineRepository.save(timeline);
+        Task task=taskDAO.findById(timeline.getTask().getTaskId()).get();
+        if(task==null){
+            throw new NotFoundException("task not found");
+        }
+        timeline.setTask(task);
+       return timelineRepository.save(timeline);
     }
 
     // Update an existing timeline using ModelUpdater
